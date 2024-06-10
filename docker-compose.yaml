@@ -11,9 +11,9 @@ services:
       sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=mysql_container
-      - DB_NAME=${PYTHON_DATABASE}
-      - DB_USER=${PYTHON_USER}
-      - DB_PASS=${PYTHON_PASSW}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
       - DEBUG=1
     depends_on:
       mysql_db:
@@ -28,9 +28,9 @@ services:
     image: mysql:8.4
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_USER: ${PYTHON_USER}
-      MYSQL_ROOT_PASSWORD: ${PYTHON_PASSW}
-      MYSQL_DATABASE: ${PYTHON_DATABASE}
+      MYSQL_ROOT_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - ./data:/var/lib/mysql
     healthcheck:
