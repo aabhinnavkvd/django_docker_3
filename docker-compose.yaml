@@ -20,15 +20,15 @@ services:
         condition: service_healthy
 
   mysql_db:
-  image: mysql:8.4
-  container_name: mysql_container
-  environment:
-    MYSQL_ROOT_USER: 'root'
-    MYSQL_ROOT_PASSWORD: 'django_admin'
-    MYSQL_DATABASE: 'django_db'
-  volumes:
-    - ./data:/var/lib/mysql
-  healthcheck:
+    image: mysql:8.4
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'django_admin'
+      MYSQL_DATABASE: 'django_db'
+    volumes:
+      - ./data:/var/lib/mysql
+    healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
