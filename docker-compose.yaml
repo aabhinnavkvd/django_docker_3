@@ -4,11 +4,15 @@ services:
     build: 
       context: ./django_folder
     image: my_django_app:1.0
-    ports:
-      - 8000:8000
+    volumes:
+      - static_files:/django_folder/staticfiles
+    # ports:
+    #   - 8000:8000
+    expose:
+      - 8000
     container_name: django_container
     command: >
-      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py migrate && gunicorn myproject.wsgi:application --bind 0.0.0.0:8000"
     environment:
       - DB_HOST=mysql_container
       - DB_NAME=${DB_NAME}
@@ -39,6 +43,18 @@ services:
       timeout: 30s
       retries: 3
 
+  django_nginx:
+    build: 
+      context: ./nginx
+    container_name: nginx_container
+    ports:
+      - 80:80
+    volumes:
+      - static_files:/home/myapp/staticfiles
+    depends_on:
+      - my_django_app
+
 volumes:
   data:
+  static_files:
     
